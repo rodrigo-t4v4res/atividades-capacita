@@ -7,6 +7,21 @@
     <title>Document</title>
 </head>
 
+<style>
+    .contanier {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .comprado {
+        text-decoration-line: line-through;
+        color: rgb(193, 193, 193);
+    }
+</style>
+
 <body>
     <div class="contanier">
         <h1>🛒 Minha lista de compras</h1>
@@ -32,9 +47,34 @@
 
             if (itemText !== '') {
                 const novoItemLista = document.createElement('li');
+                const novoItem = document.createElement('span');
+                novoItem.textContent = itemText;
+                novoItemLista.appendChild(novoItem);
                 
+                novoItem.addEventListener('click', () => {
+                    novoItemLista.classList.toggle('comprado');
+                });
+
+                shoppingList.appendChild(novoItemLista);
+
+                itemInput.value = '';
+                itemInput.focus();
+            } else {
+                alert('Por favor, digite um item para adicionar à lista.')
             }
         }
+
+            addItemBtn.addEventListener('click', addItem);
+            itemInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    addItem();
+                }
+            });
+
+            clearListBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja limpar toda a lista?'))
+                shoppingList.innerHTML = '';
+            })
     </script>
 </body>
 
