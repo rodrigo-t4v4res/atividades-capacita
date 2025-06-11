@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #personagens-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .personagem-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s ease-in-out;
+            padding: 15px;
+            box-sizing: border-box;
+            /* Para incluir padding no width */
+        }
+
+        .personagem-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .personagem-card img {
+            max-width: 100%;
+            height: 200px;
+            /* Altura fixa para as imagens */
+            object-fit: cover;
+            /* Garante que a imagem preencha o espaço sem distorcer */
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .personagem-card h2 {
+            font-size: 1.4em;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .personagem-card p {
+            font-size: 1em;
+            color: #777;
+            margin: 5px 0;
+        }
+
+        .personagem-card p strong {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Personagens Harry Potter</h1>
+    <div id="personagens-container">
+    </div>
+</body>
+
+<script>
+    const apiUrl = 'https://hp-api.onrender.com/api/characters';
+    const personagensContainer = document.getElementById('personagens-container');
+
+    async function fetchDisplayPersonagens() {
+        const resposta = await fetch(apiUrl);
+        const personagens = await resposta.json();
+
+        const personagensDisplay = personagens.map(personagem => ({
+            nome: personagem.name || 'Nome desconhecido',
+            casa: personagem.house || 'Casa desconhecida',
+            imagem: personagem.image || 'https://via.placeholder.com/200x200?text=Sem+Imagem',
+        }));
+
+        personagensDisplay.forEach(personagem => {
+            const personagemCard = document.createElement('div');
+            personagemCard.classList.add('personagem-card');
+
+            personagemCard.innerHTML = `
+                <img src="${personagem.imagem}" alt="${personagem.nome}">
+                <h2>${personagem.nome}</h2>
+                <p>Casa: ${personagem.casa}</p>
+        `;
+            personagensContainer.appendChild(personagemCard);
+        });
+
+    }
+    document.addEventListener('DOMContentLoaded', fetchDisplayPersonagens);
+</script>
+
+</html>
